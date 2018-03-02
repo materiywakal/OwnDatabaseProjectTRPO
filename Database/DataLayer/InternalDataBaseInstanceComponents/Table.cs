@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using InternalDataBaseInstanceComponents;
+using DataLayer.Shared.ExtentionMethods;
+using DataLayer.Shared.DataModels;
 
 namespace DataLayer.InternalDataBaseInstanceComponents
 {
@@ -38,7 +41,7 @@ namespace DataLayer.InternalDataBaseInstanceComponents
         /// <param name="newTable"></param>
         public void AddColumn(Column newTable)
         {
-            if (Methods.isThereNoUndefinedSymbols(newTable.Name))
+            if (newTable.Name.isThereNoUndefinedSymbols())
             {
                 foreach (Column tblProp in Columns)
                 {

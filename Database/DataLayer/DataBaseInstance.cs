@@ -1,4 +1,5 @@
 ﻿using DataLayer.InternalDataBaseInstanceComponents;
+using DataLayer.Shared.ExtentionMethods;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -32,7 +33,8 @@ namespace DataLayer
          /// <param name="bufTable"></param>
          public void AddTable(Table bufTable)
          {
-             if (Methods.isThereNoUndefinedSymbols(bufTable.Name))
+                // rewrite as an axtention method to avoid directly call
+             if (bufTable.Name.isThereNoUndefinedSymbols())
              {
                  foreach (Table tbl in TablesDB)
                  {

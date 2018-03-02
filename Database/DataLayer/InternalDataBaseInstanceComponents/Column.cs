@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using DataLayer.Shared.DataModels;
+using DataLayer.Shared.ExtentionMethods;
 
 namespace InternalDataBaseInstanceComponents
 {
@@ -25,7 +27,7 @@ namespace InternalDataBaseInstanceComponents
             _name = name;
             dataType = DataType;
             allowsNull = allowsnull;
-            _Default = Methods.GetDefaultValue(DataType);
+            _Default = DataType.GetDefaultValue();
             if (def != null)
             {
                 Type buf = def.GetType();
