@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DB
 {
-    public struct Column
+    [Serializable()]
+    public struct Column:ISerializable
     {
         /// <summary>
         /// General constructor
@@ -79,6 +82,11 @@ namespace DB
             int AllowsNullHashCode = 1;
             if (!AllowsNull) AllowsNullHashCode =2;
             return NameHashCode * TypeHashCode * AllowsNullHashCode;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
         //
 

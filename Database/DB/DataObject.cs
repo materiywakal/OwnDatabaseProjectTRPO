@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DB
 {
-    public class DataObject
+    [Serializable()]
+    public class DataObject:ISerializable
     {
         int _dataHashcode;
         object _data;
@@ -18,6 +21,11 @@ namespace DB
         {
             DataHashcode = hash;
             Data = data;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DB
 {
-    class Table
+    [Serializable()]
+    class Table : ISerializable
     {
         //fields
         string _name;
@@ -70,6 +72,11 @@ namespace DB
             }
             else throw new IndexOutOfRangeException("Arguments array isn't similar to count of columns in table");
 
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
         //
     }

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DB
 {
-    class DB
+
+    [Serializable()]
+    class DB:ISerializable
     {
         //fields
         List<Table> _tablesDB = new List<Table>();
@@ -41,6 +45,10 @@ namespace DB
             else throw new FormatException("There is invalid symbols in table's name!");
         }
 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
