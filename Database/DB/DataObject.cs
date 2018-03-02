@@ -11,8 +11,8 @@ namespace DB
         int _dataHashcode;
         object _data;
 
-        public int DataHashcode { get => _dataHashcode; set => _dataHashcode = value; }
-        public object Data { get => _data; set => _data = value; }
+        public int DataHashcode { get => _dataHashcode; private set => _dataHashcode = value; }
+        public object Data { get => _data; private set => _data = value; }
 
         public DataObject(int hash, object data)
         {

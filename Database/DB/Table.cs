@@ -15,9 +15,9 @@ namespace DB
         List<Column> _columns;
         //
         //properties
-        public string Name { get => _name; set => _name = value; }
+        public string Name { get => _name; private set => _name = value; }
         //
-        public List<Column> Columns { get => _columns; set => _columns = value; }
+        public List<Column> Columns { get => _columns; private set => _columns = value; }
         //
         /// <summary>
         /// Table constructor
