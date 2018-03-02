@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBModel
+namespace DB
 {
-    class Methods
+    public class Methods
     {
         static string undefSymbols = "#^&()-=+[]~'//\\.,;|? ";
        static public bool isThereNoUndefinedSymbols(string str)
