@@ -34,7 +34,8 @@ namespace DB
         /// <param name="bufTable"></param>
         public void AddTable(Table bufTable)
         {
-            if (Methods.isThereNoUndefinedSymbols(bufTable.Name))
+            // rewrite as an extention method to avoid directly class call 
+            if (bufTable.Name.isThereNoUndefinedSymbols())
             {
                 foreach (Table tbl in TablesDB)
                 {

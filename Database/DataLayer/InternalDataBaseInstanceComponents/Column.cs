@@ -1,0 +1,97 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using DataLayer.Shared.DataModels;
+using DataLayer.Shared.ExtentionMethods;
+
+namespace InternalDataBaseInstanceComponents
+{
+    [Serializable()]
+    public struct Column:ISerializable
+    {
+        /// <summary>
+        /// General constructor
+        /// </summary>
+        /// <param name="name">Name of the column</param>
+        /// <param name="DataType">Type of the data at this column</param>
+        /// <param name="allowsnull">Does this column allows null data objects?</param>
+        /// <param name="isFkey">Is this column a foreign key</param>
+        /// <param name="isPkey">Is this column a primary key</param>
+        /// <param name="def"> Default object for this column</param>
+        public Column(string name, Type DataType, bool allowsnull, bool isFkey, bool isPkey, object def)
+        {
+            _name = name;
+            dataType = DataType;
+            allowsNull = allowsnull;
+            _Default = DataType.GetDefaultValue();
+            if (def != null)
+            {
+                Type buf = def.GetType();
+
+                if (def.GetType() == dataType) _Default = def;
+            }
+            _dataList = new List<DataObject>();
+
+            _isForeignKey = isFkey;
+            _isPrimaryKey = isPkey;
+        }
+        //fields
+
+        string _name;
+        //
+        Type dataType;
+        //
+        bool allowsNull;
+        //
+        object _Default;
+        //
+        bool _isPrimaryKey;
+        //
+        bool _isForeignKey;
+        //
+        List<DataObject> _dataList;
+
+        //properties
+        public string Name { get => _name; private set => _name = value; }
+        public Type DataType { get => dataType; private set => dataType = value; }
+        public bool AllowsNull { get => allowsNull; private set => allowsNull = value; }
+        public object Default { get => _Default; private set => _Default = value; }
+        public bool IsPrimaryKey { get => _isPrimaryKey; private set => _isPrimaryKey = value; }
+        public bool IsForeignKey { get => _isForeignKey; private set => _isForeignKey = value; }
+        public List<DataObject> DataList { get => _dataList; private set => _dataList = value; }
+
+        public override bool Equals(object obj)
+        {
+            return (this.GetHashCode() + DataList.Count == obj.GetHashCode() + DataList.Count);
+        }
+
+        public override int GetHashCode()
+        {
+            int NameHashCode = 1;
+            for (int i = 0; i < Name.Length; i++)
+            {
+                NameHashCode += Math.Abs((int)Name[i]);
+            }
+            int TypeHashCode = 1;
+            for (int i = 0; i < DataType.Name.Length; i++)
+            {
+                TypeHashCode += Math.Abs((int)DataType.Name[i]);
+            }
+            int AllowsNullHashCode = 1;
+            if (!AllowsNull) AllowsNullHashCode =2;
+            return NameHashCode * TypeHashCode * AllowsNullHashCode;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
+        }
+        //
+
+    }
+
+}

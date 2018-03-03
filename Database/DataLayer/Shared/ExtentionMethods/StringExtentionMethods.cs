@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace DB
+namespace DataLayer.Shared.ExtentionMethods
 {
     //Methods name is meanless
     public static class ExtensionMethods
@@ -22,19 +22,6 @@ namespace DB
                 if (undefSymbols.Contains(str[i])) return false;
             }
             return true;    
-        }
-
-        // same as above
-        public static object GetDefaultValue(this Type t)
-        {
-            if (t.IsValueType)
-            {
-                return Activator.CreateInstance(t);
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }
