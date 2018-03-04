@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataLayer.Shared.ExtentionMethods
 {
-    public static class TypeExtentionMethods
+    internal static class TypeExtentionMethods
     {
         public static object GetDefaultValue(this Type t)
         {

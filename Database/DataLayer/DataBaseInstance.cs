@@ -9,7 +9,7 @@ namespace DataLayer
 {
     
      [Serializable()]
-     class DataBaseInstance : ISerializable
+     public class DataBaseInstance : ISerializable
      {
          //fields
          List<Table> _tablesDB = new List<Table>();
@@ -17,12 +17,14 @@ namespace DataLayer
          //properties
          public string Name { get => _name; set => _name = value; }
          internal List<Table> TablesDB { get => _tablesDB; set => _tablesDB = value; }
-         //
+         
+         // Now you can't create DataBaseInstance directly because of internal spec.
+         // only through Kernel object
          /// <summary>
          /// DB constructor
          /// </summary>
          /// <param name="name"></param>
-         public DataBaseInstance(string name)
+         internal DataBaseInstance(string name)
          {
              _name = name;
          }

@@ -12,7 +12,7 @@ using DataLayer.Shared.DataModels;
 namespace DataLayer.InternalDataBaseInstanceComponents
 {
     [Serializable()]
-    class Table : ISerializable
+    public class Table : ISerializable
     {
         //fields
         string _name;
