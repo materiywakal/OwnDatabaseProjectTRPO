@@ -20,10 +20,9 @@ namespace DataLayer
                 {
                     if (instance == null)
                     {
+                        //!!! here check enviroment for something
                         instance = new List<DataBaseInstance>();
-
                     }
-                        
                 }
             }
             return instance;
@@ -36,9 +35,9 @@ namespace DataLayer
             if (element != null)
                 return element;
             throw new IndexOutOfRangeException("Коля, лови!");
-
         }
 
+        // Methods for Sanya (best dev)
         internal static void AddDBInstance(DataBaseInstance inst)
         {
             var _instance = Kernel.GetInstance();
@@ -47,7 +46,7 @@ namespace DataLayer
             _instance.Add(inst);
         }
 
-        internal static void CreateDB(string name)
+        internal static void AddDBInstance(string name)
         {
             DataBaseInstance bufInst = new DataBaseInstance(name);
             AddDBInstance(bufInst);
