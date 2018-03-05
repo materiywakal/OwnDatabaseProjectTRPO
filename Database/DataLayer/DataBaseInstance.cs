@@ -35,7 +35,6 @@ namespace DataLayer
          /// <param name="bufTable"></param>
          public void AddTable(Table bufTable)
          {
-                // rewrite as an axtention method to avoid directly call
              if (bufTable.Name.isThereNoUndefinedSymbols())
              {
                  foreach (Table tbl in TablesDB)
