@@ -13,9 +13,11 @@ namespace UILayer
         static void Main(string[] args)
         {
             //Only for testing purposes!!
-            var some = Kernel.getInstance("first");
+            var some = Kernel.GetInstance("first");
             some.AddTable(new Table("same"));
-            
+            string xx = default(string);
+            xx = Console.ReadLine();
+           
         }
     }
 }

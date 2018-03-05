@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using DataLayer.Shared.DataModels;
 using DataLayer.Shared.ExtentionMethods;
 
-namespace InternalDataBaseInstanceComponents
+namespace DataLayer.InternalDataBaseInstanceComponents
 {
     [Serializable()]
     public struct Column:ISerializable

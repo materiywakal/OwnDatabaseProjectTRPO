@@ -16,7 +16,7 @@ namespace DataLayer
          string _name;
          //properties
          public string Name { get => _name; set => _name = value; }
-         internal List<Table> TablesDB { get => _tablesDB; set => _tablesDB = value; }
+         public List<Table> TablesDB { get => _tablesDB; set => _tablesDB = value; }
          
          // Now you can't create DataBaseInstance directly because of internal spec.
          // only through Kernel object
