@@ -8,9 +8,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DataLayer.Shared.ExtentionMethods
 {
-    public static class ExtensionMethods
+
+    internal static class StringExtentionMethods
     {
         static string undefSymbols = "#^&()-=+[]~'//\\.,;|? ";
+        
+
 
        static public bool isThereNoUndefinedSymbols(this string str)
         {
