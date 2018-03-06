@@ -53,6 +53,10 @@
       <Project>{09f10eae-c14c-4dbf-987d-58789b417efc}</Project>
       <Name>DataModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kernel\Kernel.csproj">
+      <Project>{09e21e11-35f6-4059-bf75-2dabe7fad5a6}</Project>
+      <Name>Kernel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -45,5 +45,11 @@
     <Compile Include="Modules\CollectDataModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SecurityLayer\SecurityLayer.csproj">
+      <Project>{b7ae268d-b2e3-491b-ae46-4249fa7e2f5b}</Project>
+      <Name>SecurityLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
