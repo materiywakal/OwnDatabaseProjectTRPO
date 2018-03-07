@@ -9,12 +9,14 @@ namespace DataAccessLayer.Modules
 {
     class CacheModule
     {
-        //Сохраняем БД
+  //Сохраняем БД
         static public void SaveDataBase(byte[] _dataToSave, string _dataBaseName)
         {
             //Создаем папочку 
             System.IO.Directory.CreateDirectory("./DataBases");
-
+        // this is save to file module
+        // and also here should be implemented startup method
+        // for kernel instance initialize
             //Создаем / пересоздаем файл
             StreamWriter _writer = new StreamWriter("./DataBases/" + _dataBaseName + ".soos");
 
