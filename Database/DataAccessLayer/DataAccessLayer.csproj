@@ -43,6 +43,7 @@
     <Compile Include="AssemblyConfig.cs" />
     <Compile Include="Modules\CacheModule.cs" />
     <Compile Include="Modules\CollectDataModule.cs" />
+    <Compile Include="Modules\SharedDataAccessMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

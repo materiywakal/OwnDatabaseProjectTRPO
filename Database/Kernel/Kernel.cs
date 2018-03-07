@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
+using DataAccessLayer.Modules;
 
 [assembly: InternalsVisibleTo("FilesLayer")]
 
@@ -20,8 +21,10 @@ namespace DataLayer
                 {
                     if (instance == null)
                     {
+
                         //!!! here check enviroment for something
-                        instance = new List<DataBaseInstance>();
+                        instance = CollectDataModule.LoadAllDataBases();
+
                     }
                 }
             }
@@ -38,6 +41,12 @@ namespace DataLayer
         }
 
         // Methods for Sanya (best dev)
+        internal static void AddDBInstance(string name)
+        {
+            DataBaseInstance bufInst = new DataBaseInstance(name);
+            AddDBInstance(bufInst);
+        }
+        //
         internal static void AddDBInstance(DataBaseInstance inst)
         {
             var _instance = Kernel.GetInstance();
@@ -46,11 +55,7 @@ namespace DataLayer
             _instance.Add(inst);
         }
 
-        internal static void AddDBInstance(string name)
-        {
-            DataBaseInstance bufInst = new DataBaseInstance(name);
-            AddDBInstance(bufInst);
-        }
+      
 
     }
 }

@@ -28,12 +28,18 @@ namespace DataLayer
          {
              _name = name;
          }
-         //
-         /// <summary>
-         /// Add table to this Database
-         /// </summary>
-         /// <param name="bufTable"></param>
-         public void AddTable(Table bufTable)
+        //
+        /// <summary>
+        /// Add table to this Database
+        /// </summary>
+        /// <param name="bufTable"></param>
+        public void AddTable(string name)
+        {
+            Table bufTable = new Table(name);
+            AddTable(bufTable);
+        }
+
+        public void AddTable(Table bufTable)
          {
              if (bufTable.Name.isThereNoUndefinedSymbols())
              {
