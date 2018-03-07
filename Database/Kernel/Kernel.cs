@@ -23,7 +23,7 @@ namespace DataLayer
                     {
 
                         //!!! here check enviroment for something
-                        instance = CollectDataModule.LoadAllDataBases();
+                        instance = new List<DataBaseInstance>();
 
                     }
                 }
@@ -54,7 +54,34 @@ namespace DataLayer
                 return;
             _instance.Add(inst);
         }
+        
+        internal static void SaveDataBaseInstanceToFolder(this DataBaseInstance inst)
+        {
+            CacheModule.SaveDataBaseToFolder(inst);
+        }
 
+        internal static void SaveAllDatabases(List<DataBaseInstance> list)
+        {
+            CacheModule.SaveAllDatabases(GetInstance());
+        }
+
+        internal static void LoadDatabase(string name)
+        {
+           DataBaseInstance bufInst = CollectDataModule.LoadDataBase(name); 
+            if (bufInst.Name == "nullDB") throw new ArgumentException("THere is no DB with such name in folder");
+            if (GetInstance().isDatabaseExistsInList(bufInst.Name))
+            {
+                GetInstance()[GetInstance().IndexOfDatabase(bufInst.Name)] = bufInst;
+            }
+        }
+        
+        internal static void LoadAllDatabases(bool isUpdatativeLoad)
+        {
+            var _instance = GetInstance();
+            if (!isUpdatativeLoad) _instance = CollectDataModule.LoadAllDataBases();
+            _instance = CollectDataModule.UpdatativeDatabasesLoad(_instance);
+
+        }
       
 
     }

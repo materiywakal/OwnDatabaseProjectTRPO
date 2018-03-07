@@ -7,7 +7,7 @@ using System.IO;
 
 namespace DataAccessLayer.Modules
 {
-    class SharedDataAccessMethods
+    static class SharedDataAccessMethods
     {
         static internal void CreateDatabasesDirectory()
         {
@@ -17,6 +17,30 @@ namespace DataAccessLayer.Modules
         {
             if (Directory.Exists("./Databases")) return true;
             return false;
+        }
+        static internal bool isDatabaseExistsInList(this List<DataLayer.DataBaseInstance> list,string Name)
+        {
+            foreach (DataLayer.DataBaseInstance db in list)
+                if (db.Name == Name) return true;
+            return false;
+        }
+        static internal int IndexOfDatabase(this  List<DataLayer.DataBaseInstance> list, string Name)
+        {
+            if (list.isDatabaseExistsInList(Name))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Name == Name) return i;
+                }
+            }
+            else throw new ArgumentException("There is no such Database in list!");
+            return -1;
+            
+        }
+        static internal int HowManyDBFilesInFolder()
+        {
+            return Directory.GetFiles("./DataBases", "*.soos").Length;
+
         }
     }
 }
