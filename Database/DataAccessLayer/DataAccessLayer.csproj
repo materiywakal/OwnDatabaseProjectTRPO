@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataLayer\DataModels.csproj">
+      <Project>{09f10eae-c14c-4dbf-987d-58789b417efc}</Project>
+      <Name>DataModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SecurityLayer\SecurityLayer.csproj">
       <Project>{b7ae268d-b2e3-491b-ae46-4249fa7e2f5b}</Project>
       <Name>SecurityLayer</Name>
