@@ -18,19 +18,20 @@ namespace DataAccessLayer.Modules
             if (!SharedDataAccessMethods.isDirectoryExists())
                 SharedDataAccessMethods.CreateDatabasesDirectory();
 
-          // this is save to file module
-          // and also here should be implemented startup method
-          // for kernel instance initialize
-            using(StreamWriter _writer = new StreamWriter("./DataBases/" + db.Name + ".soos"))
+            // this is save to file module
+            // and also here should be implemented startup method
+            // for kernel instance initialize
+            using (FileStream _fileStream = new FileStream(string.Format("./DataBases/" + db.Name + ".soos"), FileMode.Create, FileAccess.Write))
             {
                 //
                 //buf key
                 byte[] key = new byte[1] { 1 };
                 //
-                byte[] _dbArrayToSave = EncryptionModule.EncryptDataBase(db, key);
-                for (int i = 0; i < _dbArrayToSave.Length; i++)
-                    _writer.Write(_dbArrayToSave[i]);
-                _writer.Close();
+                MemoryStream streamOfEncryptedDataBase = EncryptionModule.EncryptDataBase(db, key);
+
+                streamOfEncryptedDataBase.Position = 0;
+                streamOfEncryptedDataBase.WriteTo(_fileStream);
+                streamOfEncryptedDataBase.Close();
             }
         }
         //

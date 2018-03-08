@@ -60,7 +60,7 @@ namespace DataLayer
             CacheModule.SaveDataBaseToFolder(inst);
         }
 
-        internal static void SaveAllDatabases(List<DataBaseInstance> list)
+        public static void SaveAllDatabases()
         {
             CacheModule.SaveAllDatabases(GetInstance());
         }

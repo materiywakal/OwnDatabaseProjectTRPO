@@ -18,25 +18,26 @@ namespace DataAccessLayer.Modules
         static internal DataLayer.DataBaseInstance LoadDataBase(string DBName)
         {
             if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new NullReferenceException("There is no DB files in folder");
-            DataLayer.DataBaseInstance dbObject = new DataLayer.DataBaseInstance("nullDB");
-            Console.WriteLine("finded1");
+
+            Console.WriteLine("finded!");
 
             string[] _filePaths = System.IO.Directory.GetFiles("./DataBases", "*.soos");
             if (_filePaths.Contains<string>("./DataBases\\"+DBName+".soos"))
             {
                 Console.WriteLine("finded");
-                StreamReader _reader = new StreamReader("./DataBases\\" + DBName+".soos");
-                byte[] _array = new byte[0];
-                for (int j = 0; j < 0; j++)
-                {
-                    _array[j] = Convert.ToByte(_reader.Read());
-                }
+
+                // Грубо говоря тут короче мы выделяем один файл с базой
+                string _filePath = ("./DataBases\\" + DBName+".soos");
+
+                // А вот это по-мужски
+                byte[] _array = File.ReadAllBytes(_filePath);
+
                 //buf key
                 byte[] key = new byte[1] { 1 };
-                //
-                dbObject = SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key);
+
+                return SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key);
             }
-            return dbObject;
+            return new DataLayer.DataBaseInstance("nullDB"); ;
         }
         /// <summary>
         /// Delete all db instances from list and adds all db files that contains folder
@@ -45,6 +46,7 @@ namespace DataAccessLayer.Modules
         static internal List<DataLayer.DataBaseInstance> LoadAllDataBases()
         {
             if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new NullReferenceException("There is no DB files in folder");
+
             List<DataLayer.DataBaseInstance> bufList = new List<DataLayer.DataBaseInstance>();
             if (SharedDataAccessMethods.isDirectoryExists())
             {
@@ -52,11 +54,9 @@ namespace DataAccessLayer.Modules
                 for (int i = 0; i < _filePaths.Length; i++)
                 {
                     StreamReader _reader = new StreamReader(_filePaths[i]);
-                    byte[] _array = new byte[0];
-                    for (int j = 0; j < 0; j++)
-                    {
-                        _array[j] = Convert.ToByte(_reader.Read());
-                    }
+
+                    byte[] _array = File.ReadAllBytes(_filePaths[i]);
+
                     //buf key
                     byte[] key = new byte[1] { 1 };
                     //
@@ -82,11 +82,7 @@ namespace DataAccessLayer.Modules
                 for (int i = 0; i < _filePaths.Length; i++)
                 {
                     StreamReader _reader = new StreamReader(_filePaths[i]);
-                    byte[] _array = new byte[0];
-                    for (int j = 0; j < 0; j++)
-                    {
-                        _array[j] = Convert.ToByte(_reader.Read());
-                    }
+                    byte[] _array = File.ReadAllBytes(_filePaths[i]);
                     //buf key
                     byte[] key = new byte[1] { 1 };
                     //
