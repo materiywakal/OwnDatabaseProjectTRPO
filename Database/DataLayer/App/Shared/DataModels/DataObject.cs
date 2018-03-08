@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DataLayer.Shared.DataModels
 {
-    [Serializable()]
+    [Serializable]
     public class DataObject:ISerializable
     {
         int _dataHashcode;

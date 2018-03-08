@@ -8,8 +8,8 @@ using System.Text;
 namespace DataLayer
 {
     
-     [Serializable()]
-     public class DataBaseInstance : ISerializable
+     [Serializable]
+     public class DataBaseInstance
      {
          //fields
          List<Table> _tablesDB = new List<Table>();
@@ -24,7 +24,7 @@ namespace DataLayer
          /// DB constructor
          /// </summary>
          /// <param name="name"></param>
-         internal DataBaseInstance(string name)
+         public DataBaseInstance(string name)
          {
              _name = name;
          }
@@ -51,11 +51,7 @@ namespace DataLayer
              }
              else throw new FormatException("There is invalid symbols in table's name!");
          }
-
-         public void GetObjectData(SerializationInfo info, StreamingContext context)
-         {
-             throw new NotImplementedException();
-         }
+        
      }
     
 }

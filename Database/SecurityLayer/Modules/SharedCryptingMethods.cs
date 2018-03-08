@@ -24,14 +24,10 @@ namespace SecurityLayer.Modules
         }
         static internal DataLayer.DataBaseInstance ByteArrayToDatabaseObject(byte[] dbObjectArray)
         {
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binForm = new BinaryFormatter();
+            MemoryStream memStream = new MemoryStream(dbObjectArray);
+            BinaryFormatter formatter = new BinaryFormatter();
 
-            memStream.Write(dbObjectArray, 0, dbObjectArray.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-
-            DataLayer.DataBaseInstance dbObject = (DataLayer.DataBaseInstance)binForm.Deserialize(memStream);
-            return dbObject;
+            return (DataLayer.DataBaseInstance)formatter.Deserialize(memStream);
         }
     }
 }

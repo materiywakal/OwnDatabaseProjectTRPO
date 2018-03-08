@@ -12,7 +12,15 @@ namespace UILayer
     {
         static void Main(string[] args)
         {
-            Interpretator.Run();
+            // test
+            Kernel.AddDBInstance(new DataBaseInstance("my name"));
+            Kernel.SaveAllDatabases();
+
+            //Kernel.LoadAllDatabases(false);
+            //var list = Kernel.GetInstance();
+            //Console.WriteLine(list.Count);
+            //Console.ReadKey();
+            // Interpretator.Run();
         }
     }
 }

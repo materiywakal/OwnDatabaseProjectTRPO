@@ -10,8 +10,8 @@ using DataLayer.Shared.DataModels;
 
 namespace DataLayer.InternalDataBaseInstanceComponents
 {
-    [Serializable()]
-    public class Table : ISerializable
+    [Serializable]
+    public class Table
     {
         //fields
         string _name;
@@ -75,12 +75,7 @@ namespace DataLayer.InternalDataBaseInstanceComponents
             else throw new IndexOutOfRangeException("Arguments array isn't similar to count of columns in table");
 
         }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
-        //
+        
     }
 
 }
