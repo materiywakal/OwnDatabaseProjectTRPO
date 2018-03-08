@@ -13,13 +13,13 @@ namespace UILayer
         static void Main(string[] args)
         {
             // test
-            Kernel.AddDBInstance(new DataBaseInstance("my name"));
-            Kernel.SaveAllDatabases();
-
-            //Kernel.LoadAllDatabases(false);
-            //var list = Kernel.GetInstance();
-            //Console.WriteLine(list.Count);
-            //Console.ReadKey();
+            Kernel.GetInstance().Add(new DataBaseInstance("testDB"));
+            Kernel.GetInstance()[0].AddTable("tableTest");
+            Column buf = new Column("testColumn", typeof(string), true, false, false, "kk");
+            Kernel.GetInstance()[0].TablesDB[0].AddColumn(buf);
+            Kernel.GetInstance()[0].TablesDB[0].AddTableElement(new object[1] { null });
+            Kernel.OutNamesOfExistingDBs();
+            Kernel.OutDatabaseInfo();
             // Interpretator.Run();
         }
     }

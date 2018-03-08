@@ -21,7 +21,7 @@ namespace DataAccessLayer.Modules
             // this is save to file module
             // and also here should be implemented startup method
             // for kernel instance initialize
-            using (FileStream _fileStream = new FileStream(string.Format("./DataBases/" + db.Name + ".soos"), FileMode.Create, FileAccess.Write))
+            using (FileStream _fileStream = new FileStream("./DataBases/" + db.Name + ".soos", FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 //
                 //buf key
@@ -32,6 +32,7 @@ namespace DataAccessLayer.Modules
                 streamOfEncryptedDataBase.Position = 0;
                 streamOfEncryptedDataBase.WriteTo(_fileStream);
                 streamOfEncryptedDataBase.Close();
+                _fileStream.Close();
             }
         }
         //

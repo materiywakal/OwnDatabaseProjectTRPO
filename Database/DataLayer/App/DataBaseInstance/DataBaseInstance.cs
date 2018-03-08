@@ -51,7 +51,17 @@ namespace DataLayer
              }
              else throw new FormatException("There is invalid symbols in table's name!");
          }
-        
-     }
+
+        public override string ToString()
+        {
+            string info = "|DATABASE| " + Name + " contains " + TablesDB.Count + " tables ";
+            for (int i = 0; i < TablesDB.Count; i++)
+            {
+                info += "\n"+ TablesDB[i].ToString();
+            }
+            info += "\n|DATABASE| "+Name +" END\n";
+            return info; 
+        }
+    }
     
 }

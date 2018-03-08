@@ -19,17 +19,13 @@ namespace DataAccessLayer.Modules
         {
             if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new NullReferenceException("There is no DB files in folder");
 
-            Console.WriteLine("finded!");
-
             string[] _filePaths = System.IO.Directory.GetFiles("./DataBases", "*.soos");
             if (_filePaths.Contains<string>("./DataBases\\"+DBName+".soos"))
             {
-                Console.WriteLine("finded");
-
-                // Грубо говоря тут короче мы выделяем один файл с базой
+                // pa ongleske, pidar
                 string _filePath = ("./DataBases\\" + DBName+".soos");
 
-                // А вот это по-мужски
+                // pa ongleske, pidar
                 byte[] _array = File.ReadAllBytes(_filePath);
 
                 //buf key
@@ -61,6 +57,7 @@ namespace DataAccessLayer.Modules
                     byte[] key = new byte[1] { 1 };
                     //
                     bufList.Add(SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key));
+                    _reader.Close();
                 }
             }
             else SharedDataAccessMethods.CreateDatabasesDirectory();
@@ -88,6 +85,7 @@ namespace DataAccessLayer.Modules
                     //
                     bufInst = SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key);
                     if (!bufList.isDatabaseExistsInList((bufInst.Name))) bufList.Add(bufInst);
+                    _reader.Close();
                 }
             }
             else SharedDataAccessMethods.CreateDatabasesDirectory();

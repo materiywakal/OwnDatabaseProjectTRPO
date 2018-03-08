@@ -85,7 +85,15 @@ namespace DataLayer.InternalDataBaseInstanceComponents
             if (!AllowsNull) AllowsNullHashCode =2;
             return NameHashCode * TypeHashCode * AllowsNullHashCode;
         }
-        
+
+        public override string ToString()
+        {
+            string columnInfo = "[COLUMN] " + Name + " contains data of " + DataType.Name + " variables,";
+            if (AllowsNull) columnInfo += " allows null data,";
+            else columnInfo += " doesn't allows null data,";
+            columnInfo += " default object = " + Default.ToString()+", hash = "+ GetHashCode()+"\n[COLUMN]"+Name +" INFO END";
+            return columnInfo;
+        }
     }
 
 }

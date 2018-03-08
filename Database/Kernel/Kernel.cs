@@ -24,6 +24,7 @@ namespace DataLayer
 
                         //!!! here check enviroment for something
                         instance = new List<DataBaseInstance>();
+                        LoadAllDatabases(true);
 
                     }
                 }
@@ -38,6 +39,33 @@ namespace DataLayer
             if (element != null)
                 return element;
             throw new IndexOutOfRangeException("Коля, лови!");
+        }
+
+        public static void OutDatabaseInfo()
+        {
+            if (GetInstance().Count == 0) throw new NullReferenceException("There is no DB's in list!");
+            for (int i = 0; i < GetInstance().Count; i++)
+            {
+                Console.WriteLine(GetInstance()[i].ToString());
+            }
+        }
+        public static void OutDatabaseInfo(string name)
+        {
+           int index =  SharedDataAccessMethods.IndexOfDatabase(GetInstance(), name);
+            Console.WriteLine(GetInstance()[index].ToString());
+        }
+        public static void OutNamesOfExistingDBs()
+        {
+            if (GetInstance().Count == 0) Console.WriteLine("There is no DB in list!");
+            else
+            {
+                string info = "DB's list:";
+                for (int i = 0; i < GetInstance().Count; i++)
+                {
+                    info += " " + GetInstance()[i].Name;
+                }
+                Console.WriteLine(info);
+            } 
         }
 
         // Methods for Sanya (best dev)
@@ -77,9 +105,8 @@ namespace DataLayer
         
         internal static void LoadAllDatabases(bool isUpdatativeLoad)
         {
-            var _instance = GetInstance();
-            if (!isUpdatativeLoad) _instance = CollectDataModule.LoadAllDataBases();
-            _instance = CollectDataModule.UpdatativeDatabasesLoad(_instance);
+            if (!isUpdatativeLoad) instance = CollectDataModule.LoadAllDataBases();
+            instance = CollectDataModule.UpdatativeDatabasesLoad(instance);
 
         }
       
