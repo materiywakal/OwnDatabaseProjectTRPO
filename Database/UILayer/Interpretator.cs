@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataLayer;
+using DataLayer.InternalDataBaseInstanceComponents;
 
 namespace UILayer
 {
@@ -33,7 +35,7 @@ namespace UILayer
 
                     case "CREATE_TABLE":
                         {
-
+                            Kernel.AddDBInstance("db1");
                         }break;
 
                     default:
@@ -67,6 +69,7 @@ namespace UILayer
                 else
                 {
                     Console.WriteLine($"\nERROR: Name of the database can't be a keyword\n");
+                    
                 }
             }
             else
