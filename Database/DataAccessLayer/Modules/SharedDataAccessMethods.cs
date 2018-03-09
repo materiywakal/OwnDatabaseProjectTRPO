@@ -41,7 +41,6 @@ namespace DataAccessLayer.Modules
         {
             if (!isDirectoryExists()) CreateDatabasesDirectory();
             return Directory.GetFiles("./DataBases", "*.soos").Length;
-
         }
     }
 }

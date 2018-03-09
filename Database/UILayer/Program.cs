@@ -25,8 +25,10 @@ namespace UILayer
             //Kernel.GetInstance()[1].TablesDB[0].AddTableElement(new object[1] { null });
             //Kernel.SaveAllDatabases();
             //Kernel.OutNamesOfExistingDBs();
-            Kernel.OutDatabaseInfo();
-            // Interpretator.Run();
+            //
+            //Interpretator.Run();
+
+            Console.WriteLine(Convert.ToBoolean("xui"));
         }
     }
 }
