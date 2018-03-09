@@ -40,12 +40,6 @@ namespace UILayer
                         Console.WriteLine($"\nERROR: Command '{keyWord}' doesn't found\n");
                         break;
                 }
-
-
-
-
-
-
             }
 
 
