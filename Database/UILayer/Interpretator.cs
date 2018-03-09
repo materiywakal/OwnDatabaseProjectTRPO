@@ -36,12 +36,16 @@ namespace UILayer
                         break;
                     case "CREATE_TABLE":
                         {
+<<<<<<< HEAD
                             CreateTable(query);
                         }
                         break;
                     case "INFO":
                         {
 
+=======
+                            Kernel.AddDBInstance("db1");
+>>>>>>> e46bbe7cf81150132aeb5f3658f0b6352ec6090b
                         }break;
                     case "ALL_DATABASES":
                         {
@@ -89,6 +93,7 @@ namespace UILayer
                 else
                 {
                     Console.WriteLine($"\nERROR: Name of the database can't be a keyword\n");
+                    
                 }
             }
             else

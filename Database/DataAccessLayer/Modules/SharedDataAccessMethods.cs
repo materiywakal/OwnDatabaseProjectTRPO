@@ -39,6 +39,7 @@ namespace DataAccessLayer.Modules
         }
         static internal int HowManyDBFilesInFolder()
         {
+            if (!isDirectoryExists()) CreateDatabasesDirectory();
             return Directory.GetFiles("./DataBases", "*.soos").Length;
 
         }
