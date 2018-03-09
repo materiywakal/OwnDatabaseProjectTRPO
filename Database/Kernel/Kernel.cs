@@ -110,6 +110,10 @@ namespace DataLayer
 
         }
       
-
+        internal static bool isDatabaseExists(string name)
+        {
+            if (SharedDataAccessMethods.isDatabaseExistsInList(GetInstance(), name)) return true;
+            return false;
+        }
     }
 }
