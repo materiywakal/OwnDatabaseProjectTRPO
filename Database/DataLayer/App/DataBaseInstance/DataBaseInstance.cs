@@ -52,6 +52,16 @@ namespace DataLayer
              else throw new FormatException("There is invalid symbols in table's name!");
          }
 
+        public int indexOfTable(string name)
+        {
+            if (TablesDB.Count == 0) throw new NullReferenceException();
+            for (int i = 0; i < TablesDB.Count; i++)
+            {
+                if (TablesDB[i].Name == name) return i;
+            }
+            return -1;
+        }
+
         public override string ToString()
         {
             string info = "|DATABASE| " + Name + " contains " + TablesDB.Count + " tables ";

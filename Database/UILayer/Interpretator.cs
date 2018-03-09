@@ -14,8 +14,9 @@ namespace UILayer
         {
             "CREATE_DATABASE",
             "CREATE_TABLE",
-            "INFO",
-            "ALL_DATABASES",
+            "CREATE_TABLE_IN",
+            "DATABASES_INFO",
+            "SAVE_ALL",
 
         };
 
@@ -36,20 +37,21 @@ namespace UILayer
                         break;
                     case "CREATE_TABLE":
                         {
-<<<<<<< HEAD
-                            CreateTable(query);
+                            CreateTableIn(query);
                         }
                         break;
-                    case "INFO":
+                    case "CREATE_TABLE_IN":
+                        {
+                            
+                        }
+                        break;
+                    case "DATABASES_INFO":
                         {
 
-=======
-                            Kernel.AddDBInstance("db1");
->>>>>>> e46bbe7cf81150132aeb5f3658f0b6352ec6090b
                         }break;
-                    case "ALL_DATABASES":
+                    case "SAVE_ALL":
                         {
-
+                            SaveAll();
                         }break;
                     default:
                         Console.WriteLine($"\nERROR: Command '{keyWord}' doesn't found\n");
@@ -57,6 +59,8 @@ namespace UILayer
                 }
             }
         }
+
+       
         #region LocalMethods
         private static string GetMainKeyword(string query)
         {
@@ -74,6 +78,18 @@ namespace UILayer
             return false;
         }
 
+
+        private static Column GetColumn(string[] tempParams)
+        {
+            string columnName = tempParams[0];
+            Type columnType = Type.GetType(tempParams[1]);
+            bool b1 = Convert.ToBoolean(tempParams[2]);
+            //bool b2=co
+
+            Column buf = new Column();
+            return buf;
+        }
+
         #endregion
 
         #region MainMetods
@@ -82,13 +98,18 @@ namespace UILayer
         {
             char[] separators = new char[] { ' ', ';' };
             string[] queryList = query.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
+            
             if (queryList.Length == 2)
             {
-                if (IsKeyword(queryList[1]))
+                string databaseName = default(string);
+                databaseName = queryList[1];
+
+                if (!IsKeyword(databaseName))
                 {
-                    Kernel.AddDBInstance(queryList[0]);
+                    Kernel.AddDBInstance(databaseName);
                     Console.WriteLine($"Database was created with name '{queryList[1]}'\n");
+                    Kernel.OutDatabaseInfo();
+
                 }
                 else
                 {
@@ -102,12 +123,60 @@ namespace UILayer
             }
         }
 
-        private static void CreateTable(string query)
+        private static void CreateTableIn(string query)
         {
-            
+            char[] separator = new char[] { ' ' };
+            string[] temp = query.Split(separator, 2, StringSplitOptions.RemoveEmptyEntries);
+            if (temp.Length == 2&&query[query.Length-1]==')')
+            {
+                char[] s1 = new char[] { '(' };
+                string[] t1 = query.Split(s1, 2, StringSplitOptions.RemoveEmptyEntries);
+                
+                char[] s2 = new char[] { ' ' };
+                string[] tempName = t1[0].Split(s2, StringSplitOptions.RemoveEmptyEntries);
+
+                char[] s3 = new char[] { ';' , ')' };
+                string[] tempParams = t1[1].Split(s3, StringSplitOptions.RemoveEmptyEntries);
+                
+
+
+                if(tempName.Length==3)
+                {
+                    string dbName = tempName[1];
+                    string tableName = tempName[2];
+
+                    for (int i = 0; i < tempParams.Length; i++)
+                    {
+                        string[] param = tempParams[i].Split(',');
+                        if(param.Length==6)
+                        {
+                            int tableIndex = Kernel.GetInstance(dbName).indexOfTable(tableName);
+                            Column buff = GetColumn(tempParams);
+
+
+                            Kernel.GetInstance(dbName).AddTable(tableName);
+                            //Kernel.GetInstance(dbName).TablesDB[tableIndex].AddColumn();
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\nERROR: Invalid numbers of variables in params\n");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine($"\nERROR: Missed part of the command\n");
+            }
         }
 
+        
 
+        private static void SaveAll()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 
