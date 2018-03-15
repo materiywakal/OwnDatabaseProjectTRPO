@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Exceptions
 {
-    class DatabasesNotFoundInFolderException : Exception
+    public class DatabasesNotFoundInFolderException : Exception
     {
         public DatabasesNotFoundInFolderException()
         { }
