@@ -15,26 +15,34 @@ namespace DataAccessLayer.Modules
        /// <param name="_dataBaseName"></param>
         static internal void SaveDataBaseToFolder(this DataBaseInstance db)
         {
-            if (!SharedDataAccessMethods.isDirectoryExists())
-                SharedDataAccessMethods.CreateDatabasesDirectory();
+            CreateDirectoryForDataBaseIfThereAreNoOne();
+            OpenFileAndWriteEncryptedDb(db);
+        }
 
-            // this is save to file module
-            // and also here should be implemented startup method
-            // for kernel instance initialize
+        private static void OpenFileAndWriteEncryptedDb(DataBaseInstance db)
+        {
             using (FileStream _fileStream = new FileStream("./DataBases/" + db.Name + ".soos", FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
-                //
-                //buf key
-                byte[] key = new byte[1] { 1 };
-                //
-                MemoryStream streamOfEncryptedDataBase = EncryptionModule.EncryptDataBase(db, key);
-
-                streamOfEncryptedDataBase.Position = 0;
-                streamOfEncryptedDataBase.WriteTo(_fileStream);
-                streamOfEncryptedDataBase.Close();
+                EncryptAndWriteDbToFile(_fileStream, db);
                 _fileStream.Close();
             }
         }
+
+        /// <summary>
+        /// Call EncryptionModule.EncryptDataBase for encryption purposes then save encrypted DB to file.
+        /// </summary>
+        /// <param name="fileStream">Stay at open state after method call </param>
+        /// <param name="dataBaseToWrite"></param>
+        private static void EncryptAndWriteDbToFile(FileStream fileStream, DataBaseInstance dataBaseToWrite)
+        {
+            byte[] key = new byte[1] { 1 };
+
+            MemoryStream streamOfEncryptedDataBase = EncryptionModule.EncryptDataBase(dataBaseToWrite, key);
+
+            streamOfEncryptedDataBase.Position = 0;
+            streamOfEncryptedDataBase.WriteTo(fileStream);
+        }
+
         //
         /// <summary>
         /// Saves or updates all databases from _instance list to folder
@@ -43,12 +51,18 @@ namespace DataAccessLayer.Modules
         {
             if (listDB.Count != 0)
             {
-                if(!SharedDataAccessMethods.isDirectoryExists())
-                SharedDataAccessMethods.CreateDatabasesDirectory();
+                CreateDirectoryForDataBaseIfThereAreNoOne();
+
                 foreach (DataBaseInstance bufInst in listDB)
                     bufInst.SaveDataBaseToFolder();
             }
             else throw new ArgumentNullException("There is no Databases to save!");
+        }
+
+        private static void CreateDirectoryForDataBaseIfThereAreNoOne()
+        {
+            if (!SharedDataAccessMethods.isDirectoryExists())
+                SharedDataAccessMethods.CreateDatabasesDirectory();
         }
 
     }
