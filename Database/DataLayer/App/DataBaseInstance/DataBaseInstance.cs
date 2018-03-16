@@ -8,8 +8,8 @@ using System.Text;
 namespace DataLayer
 {
     
-     [Serializable()]
-     public class DataBaseInstance : ISerializable
+     [Serializable]
+     public class DataBaseInstance
      {
          //fields
          List<Table> _tablesDB = new List<Table>();
@@ -24,16 +24,22 @@ namespace DataLayer
          /// DB constructor
          /// </summary>
          /// <param name="name"></param>
-         internal DataBaseInstance(string name)
+         public DataBaseInstance(string name)
          {
              _name = name;
          }
-         //
-         /// <summary>
-         /// Add table to this Database
-         /// </summary>
-         /// <param name="bufTable"></param>
-         public void AddTable(Table bufTable)
+        //
+        /// <summary>
+        /// Add table to this Database
+        /// </summary>
+        /// <param name="bufTable"></param>
+        public void AddTable(string name)
+        {
+            Table bufTable = new Table(name);
+            AddTable(bufTable);
+        }
+
+        public void AddTable(Table bufTable)
          {
              if (bufTable.Name.isThereNoUndefinedSymbols())
              {
@@ -46,10 +52,26 @@ namespace DataLayer
              else throw new FormatException("There is invalid symbols in table's name!");
          }
 
-         public void GetObjectData(SerializationInfo info, StreamingContext context)
-         {
-             throw new NotImplementedException();
-         }
-     }
+        public int indexOfTable(string name)
+        {
+            if (TablesDB.Count == 0) throw new NullReferenceException();
+            for (int i = 0; i < TablesDB.Count; i++)
+            {
+                if (TablesDB[i].Name == name) return i;
+            }
+            return -1;
+        }
+
+        public override string ToString()
+        {
+            string info = "|DATABASE| " + Name + " contains " + TablesDB.Count + " tables ";
+            for (int i = 0; i < TablesDB.Count; i++)
+            {
+                info += "\n"+ TablesDB[i].ToString();
+            }
+            info += "\n|DATABASE| "+Name +" END\n";
+            return info; 
+        }
+    }
     
 }

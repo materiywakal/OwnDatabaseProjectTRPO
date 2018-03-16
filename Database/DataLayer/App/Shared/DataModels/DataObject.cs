@@ -8,8 +8,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DataLayer.Shared.DataModels
 {
-    [Serializable()]
-    public class DataObject:ISerializable
+    [Serializable]
+    public class DataObject
     {
         int _dataHashcode;
         object _data;
@@ -23,9 +23,6 @@ namespace DataLayer.Shared.DataModels
             Data = data;
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

@@ -10,8 +10,8 @@ using DataLayer.Shared.ExtentionMethods;
 
 namespace DataLayer.InternalDataBaseInstanceComponents
 {
-    [Serializable()]
-    public struct Column:ISerializable
+    [Serializable]
+    public struct Column
     {
         /// <summary>
         /// General constructor
@@ -86,12 +86,14 @@ namespace DataLayer.InternalDataBaseInstanceComponents
             return NameHashCode * TypeHashCode * AllowsNullHashCode;
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override string ToString()
         {
-            throw new NotImplementedException();
+            string columnInfo = "[COLUMN] " + Name + " contains data of " + DataType.Name + " variables,";
+            if (AllowsNull) columnInfo += " allows null data,";
+            else columnInfo += " doesn't allows null data,";
+            columnInfo += " default object = " + Default.ToString()+", hash = "+ GetHashCode()+"\n[COLUMN]"+Name +" INFO END";
+            return columnInfo;
         }
-        //
-
     }
 
 }
