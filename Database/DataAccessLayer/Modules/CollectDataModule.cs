@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SecurityLayer;
 using System.IO;
+using DataAccessLayer.Exceptions;
+using DataLayer;
 
 namespace DataAccessLayer.Modules
 {
@@ -15,49 +17,36 @@ namespace DataAccessLayer.Modules
         /// </summary>
         /// <param name="DBName"></param>
         /// <returns></returns>
-        static internal DataLayer.DataBaseInstance LoadDataBase(string DBName)
+        static internal DataBaseInstance LoadDataBase(string DBName)
         {
-            if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new NullReferenceException("There is no DB files in folder");
+            if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new DatabasesNotFoundInFolderException();
 
-            string[] _filePaths = System.IO.Directory.GetFiles("./DataBases", "*.soos");
+            string[] _filePaths = Directory.GetFiles("./DataBases", "*.soos");
             if (_filePaths.Contains<string>("./DataBases\\"+DBName+".soos"))
             {
                 // pa ongleske, pidar
                 string _filePath = ("./DataBases\\" + DBName+".soos");
 
-                // pa ongleske, pidar
-                byte[] _array = File.ReadAllBytes(_filePath);
-
-                //buf key
-                byte[] key = new byte[1] { 1 };
-
-                return SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key);
+                return DecryptDataBaseFromPath(_filePath);
             }
-            return new DataLayer.DataBaseInstance("nullDB"); ;
+            return new DataBaseInstance("nullDB"); ;
         }
+
         /// <summary>
         /// Delete all db instances from list and adds all db files that contains folder
         /// </summary>
         /// <returns></returns>
-        static internal List<DataLayer.DataBaseInstance> LoadAllDataBases()
+        static internal List<DataBaseInstance> LoadAllDataBases()
         {
-            if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new NullReferenceException("There is no DB files in folder");
+            if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) throw new DatabasesNotFoundInFolderException();
 
-            List<DataLayer.DataBaseInstance> bufList = new List<DataLayer.DataBaseInstance>();
+            List<DataBaseInstance> bufList = new List<DataBaseInstance>();
             if (SharedDataAccessMethods.isDirectoryExists())
             {
                 string[] _filePaths = System.IO.Directory.GetFiles("./DataBases", "*.soos");
                 for (int i = 0; i < _filePaths.Length; i++)
                 {
-                    StreamReader _reader = new StreamReader(_filePaths[i]);
-
-                    byte[] _array = File.ReadAllBytes(_filePaths[i]);
-
-                    //buf key
-                    byte[] key = new byte[1] { 1 };
-                    //
-                    bufList.Add(SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key));
-                    _reader.Close();
+                    bufList.Add(DecryptDataBaseFromPath(_filePaths[i]));
                 }
             }
             else SharedDataAccessMethods.CreateDatabasesDirectory();
@@ -68,28 +57,31 @@ namespace DataAccessLayer.Modules
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        static internal List<DataLayer.DataBaseInstance> UpdatativeDatabasesLoad(List<DataLayer.DataBaseInstance> list)
+        static internal List<DataBaseInstance> UpdatativeDatabasesLoad(List<DataBaseInstance> list)
         {
             if (SharedDataAccessMethods.HowManyDBFilesInFolder() == 0) return list;
-            List<DataLayer.DataBaseInstance> bufList = list;
-            DataLayer.DataBaseInstance bufInst;
+            List<DataBaseInstance> bufList = list;
+            DataBaseInstance bufInst;
             if (SharedDataAccessMethods.isDirectoryExists())
             {
                 string[] _filePaths = System.IO.Directory.GetFiles("./DataBases", "*.soos");
                 for (int i = 0; i < _filePaths.Length; i++)
                 {
-                    StreamReader _reader = new StreamReader(_filePaths[i]);
-                    byte[] _array = File.ReadAllBytes(_filePaths[i]);
-                    //buf key
-                    byte[] key = new byte[1] { 1 };
-                    //
-                    bufInst = SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key);
+                    bufInst = DecryptDataBaseFromPath(_filePaths[i]);
                     if (!bufList.isDatabaseExistsInList((bufInst.Name))) bufList.Add(bufInst);
-                    _reader.Close();
                 }
             }
             else SharedDataAccessMethods.CreateDatabasesDirectory();
             return bufList;
+        }
+
+        static private DataBaseInstance DecryptDataBaseFromPath(string filePathToDecrypt)
+        {
+            byte[] _array = File.ReadAllBytes(filePathToDecrypt);
+            //buf key
+            byte[] key = new byte[1] { 1 };
+            //
+            return SecurityLayer.Modules.DecryptionModule.DecryptDataBase(_array, key);
         }
     }
 }

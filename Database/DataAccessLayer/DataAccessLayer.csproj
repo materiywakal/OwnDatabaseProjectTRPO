@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyConfig.cs" />
+    <Compile Include="Exceptions\DatabasesNotFoundInFolderException.cs" />
     <Compile Include="Modules\CacheModule.cs" />
     <Compile Include="Modules\CollectDataModule.cs" />
     <Compile Include="Modules\SharedDataAccessMethods.cs" />
