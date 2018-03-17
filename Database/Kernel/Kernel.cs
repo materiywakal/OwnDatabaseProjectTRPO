@@ -68,6 +68,12 @@ namespace DataLayer
             } 
         }
 
+        internal static bool isDatabaseExistsInList(string name)
+        {
+           return SharedDataAccessMethods.isDatabaseExistsInList(GetInstance(), name);
+        }
+
+
         // Methods for Sanya (best dev)
         internal static void AddDBInstance(string name)
         {
@@ -109,7 +115,7 @@ namespace DataLayer
             instance = CollectDataModule.UpdatativeDatabasesLoad(instance);
 
         }
-      
+
         internal static bool isDatabaseExists(string name)
         {
             if (SharedDataAccessMethods.isDatabaseExistsInList(GetInstance(), name)) return true;

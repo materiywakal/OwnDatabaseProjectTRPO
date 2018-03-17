@@ -5,71 +5,76 @@ using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
 using DataLayer.InternalDataBaseInstanceComponents;
-
+using System.Reflection;
 namespace UILayer
 {
-    class Interpretator
+    class Interpreter
     {
-        static List<string> MainKeywords = new List<string>()
+        static object _locObj = new object();
+        static Interpreter _instance;
+        private static List<string> MainKeywords = new List<string>()
         {
-            "CREATE_DATABASE",
-            "CREATE_TABLE",
-            "CREATE_TABLE_IN",
-            "DATABASES_INFO",
-            "SAVE_ALL",
-
+            "CREATE",
+            "SELECT",
+            "SAVE",
+            "DROP",
+            "CLEAR"
         };
+
+
+        private static Interpreter GetInstance()
+        {
+            if (_instance == null)
+            {
+                lock (_locObj)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new Interpreter();
+                        return _instance;
+                    }
+                }
+            }
+            return _instance;
+        }
 
         public static void Run()
         {
             while (true)
             {
+               
                 string query = default(string);
                 query = Console.ReadLine();
-                string keyWord = GetMainKeyword(query);
 
-                switch (keyWord)
+                if (query.Any(x => char.IsLetterOrDigit(x)))
                 {
-                    case "CREATE_DATABASE":
-                        {
-                            CreateDatabase(query);
-                        }
-                        break;
-                    case "CREATE_TABLE":
-                        {
-                            CreateTableIn(query);
-                        }
-                        break;
-                    case "CREATE_TABLE_IN":
-                        {
-                            
-                        }
-                        break;
-                    case "DATABASES_INFO":
-                        {
-
-                        }break;
-                    case "SAVE_ALL":
-                        {
-                            SaveAll();
-                        }break;
-                    default:
-                        Console.WriteLine($"\nERROR: Command '{keyWord}' doesn't found\n");
-                        break;
+                    char[] separator = new char[] { ' ' };
+                    string keyWord = query.Split(separator,StringSplitOptions.RemoveEmptyEntries)[0];
+                    if (GetInstance().IsMainKeyword(keyWord))
+                    {
+                        var method = GetInstance().GetType().GetMethod(keyWord, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.IgnoreCase);
+                        object[] param = new object[] { query };
+                        method?.Invoke(GetInstance(), param);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\nERROR: Word '{keyWord}' doesn't be keyword\n");
+                    }
                 }
             }
         }
 
-       
+
         #region LocalMethods
-        private static string GetMainKeyword(string query)
+        private bool IsMainKeyword(string query)
         {
-            char[] seprator = new char[] { ' ' };
-            string[] queryList = query.Split(seprator, 2, StringSplitOptions.RemoveEmptyEntries);
-            return queryList[0].ToUpper();
+            foreach (var _keyWord in MainKeywords)
+                if (_keyWord.ToUpper() == query.ToUpper())
+                    return true;
+            return false;
         }
 
-        private static bool IsKeyword(string name)
+        private bool IsKeyword(string name)
         {
             name = name.ToUpper();
             foreach (var key in MainKeywords)
@@ -78,23 +83,42 @@ namespace UILayer
             return false;
         }
 
+        private object GetDefaultValue(string type, string value)
+        {
+            switch (type.ToLower())
+            {
+                case "int":
+                    return (object)Convert.ToInt32(value);
+                case "string":
+                    return (object)value;
+                case "double":
+                    return (object)Convert.ToDouble(value);
+                default:
+                    return null;
+            }
+        }
 
-        private static Column GetColumn(string[] tempParams)
+
+
+        private Column GetColumn(string[] tempParams)
         {
             string columnName = tempParams[0];
-            Type columnType = Type.GetType(tempParams[1]);
-            bool b1 = Convert.ToBoolean(tempParams[2]);
-            //bool b2=co
-
-            Column buf = new Column();
+            Type columnType = typeof(int);
+            bool b1 = Convert.ToBoolean(tempParams[2].ToLower());
+            bool b2 = Convert.ToBoolean(tempParams[3].ToLower());
+            bool b3 = Convert.ToBoolean(tempParams[4].ToLower());
+            object defaultValue = GetDefaultValue(tempParams[1], tempParams[5]);
+            Column buf = new Column(columnName, columnType, b1, b2, b3, defaultValue);
             return buf;
         }
+
+
 
         #endregion
 
         #region MainMetods
 
-        private static void CreateDatabase(string query)
+        private static void Create(string query)
         {
             char[] separators = new char[] { ' ', ';' };
             string[] queryList = query.Split(separators, StringSplitOptions.RemoveEmptyEntries);
@@ -104,7 +128,7 @@ namespace UILayer
                 string databaseName = default(string);
                 databaseName = queryList[1];
 
-                if (!IsKeyword(databaseName))
+                if (!GetInstance().IsKeyword(databaseName))
                 {
                     Kernel.AddDBInstance(databaseName);
                     Console.WriteLine($"Database was created with name '{queryList[1]}'\n");
@@ -123,7 +147,7 @@ namespace UILayer
             }
         }
 
-        private static void CreateTableIn(string query)
+        private static void Select(string query)
         {
             char[] separator = new char[] { ' ' };
             string[] temp = query.Split(separator, 2, StringSplitOptions.RemoveEmptyEntries);
@@ -150,12 +174,13 @@ namespace UILayer
                         string[] param = tempParams[i].Split(',');
                         if(param.Length==6)
                         {
+                            //if(SharedDataAccessMethods)
+                            Kernel.AddDBInstance(dbName);
+                            var inst = Kernel.GetInstance(dbName);
+                            inst.AddTable(tableName);
                             int tableIndex = Kernel.GetInstance(dbName).indexOfTable(tableName);
-                            Column buff = GetColumn(tempParams);
-
-
-                            Kernel.GetInstance(dbName).AddTable(tableName);
-                            //Kernel.GetInstance(dbName).TablesDB[tableIndex].AddColumn();
+                            Column buff = GetInstance().GetColumn(param);
+                            inst.TablesDB[tableIndex].AddColumn(buff);
                         }
                     }
                 }
@@ -169,16 +194,48 @@ namespace UILayer
             {
                 Console.WriteLine($"\nERROR: Missed part of the command\n");
             }
+            Kernel.OutDatabaseInfo();
         }
 
-        
-
-        private static void SaveAll()
+        private static void Save(string query)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(query);
         }
 
+        private static void Clear(string query)
+        {
+            Console.Clear();
+        }
         #endregion
 
     }
 }
+//switch (keyWord)
+//{
+//    case "CREATE_DATABASE":
+//        {
+//            CreateDatabase(query);
+//        }
+//        break;
+//    case "CREATE_TABLE":
+//        {
+
+//        }
+//        break;
+//    case "CREATE_TABLE_IN":
+//        {
+//            CreateTableIn(query);
+//        }
+//        break;
+//    case "DATABASES_INFO":
+//        {
+
+//        }break;
+//    case "SAVE_ALL":
+//        {
+//            SaveAll();
+//        }break;
+//    default:
+//        Console.WriteLine($"\nERROR: Command '{keyWord}' doesn't found\n");
+//        break;
+//}
